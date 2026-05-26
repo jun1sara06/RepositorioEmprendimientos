@@ -1,12 +1,10 @@
 
 public class Emprendimiento {
 	private int id;
-	private String nombre;
-	private String emprendedor;
-	private String matricula;
-	private byte semestre;
-	private String carrera;
+	private String nombreEmprendimiento;
+	private String redSocial;
 	private String categoria;
+	private int idEmprendedor;
 	/**
 	 * 
 	 */
@@ -18,41 +16,29 @@ public class Emprendimiento {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getNombreEmprendimiento() {
+		return nombreEmprendimiento;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreEmprendimiento(String nombreEmprendimiento) {
+		this.nombreEmprendimiento = nombreEmprendimiento;
 	}
-	public String getEmprendedor() {
-		return emprendedor;
+	public String getRedSocial() {
+		return redSocial;
 	}
-	public void setEmprendedor(String emprendedor) {
-		this.emprendedor = emprendedor;
-	}
-	public String getMatricula() {
-		return matricula;
-	}
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-	public byte getSemestre() {
-		return semestre;
-	}
-	public void setSemestre(byte semestre) {
-		this.semestre = semestre;
-	}
-	public String getCarrera() {
-		return carrera;
-	}
-	public void setCarrera(String carrera) {
-		this.carrera = carrera;
+	public void setRedSocial(String redSocial) {
+		this.redSocial = redSocial;
 	}
 	public String getCategoria() {
 		return categoria;
 	}
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+	public int getIdEmprendedor() {
+		return idEmprendedor;
+	}
+	public void setIdEmprendedor(int idEmprendedor) {
+		this.idEmprendedor = idEmprendedor;
 	}
 	
 	
