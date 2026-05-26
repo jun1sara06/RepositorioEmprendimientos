@@ -3,7 +3,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import manejos.Manejo_Emprendedor;
+import manejos.Manejo_Emprendimiento;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -13,7 +19,7 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
-import javax.swing.JSpinner;
+import java.sql.ResultSet;
 
 public class GUIEmprendimiento extends JFrame {
 
@@ -22,12 +28,14 @@ public class GUIEmprendimiento extends JFrame {
 	private JPanel panelMenu;
 	private JPanel panelRegistro;
 	private JPanel panelConsulta;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_6;
-	private JTextField textField_7;
-
+	private JTextField textFieldNombre;
+	private JTextField textFieldRed;
+	private JTextField textFieldNomEmp;
+	private JTextField textFieldApellido;
+	private JTextField textFieldMatr;
+	private JTextField textFieldTel;
+	Manejo_Emprendedor ultimoID = new Manejo_Emprendedor();
+	Manejo_Emprendimiento ultimoIDEmprendimiento = new Manejo_Emprendimiento();
 	/**
 	 * Launch the application.
 	 */
@@ -68,22 +76,22 @@ public class GUIEmprendimiento extends JFrame {
 		panelRegistro.setVisible(false);
 		contentPane.add(panelRegistro);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
-		textField.setColumns(10);
-		textField.setBounds(110, 170, 340, 20);
-		panelRegistro.add(textField);
+		textFieldNombre = new JTextField();
+		textFieldNombre.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
+		textFieldNombre.setColumns(10);
+		textFieldNombre.setBounds(110, 170, 340, 20);
+		panelRegistro.add(textFieldNombre);
 		
 		JLabel lblNombreEmprendimiento = new JLabel("Nombre:");
 		lblNombreEmprendimiento.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 		lblNombreEmprendimiento.setBounds(20, 170, 80, 20);
 		panelRegistro.add(lblNombreEmprendimiento);
 		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
-		textField_1.setColumns(10);
-		textField_1.setBounds(110, 200, 340, 20);
-		panelRegistro.add(textField_1);
+		textFieldRed = new JTextField();
+		textFieldRed.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
+		textFieldRed.setColumns(10);
+		textFieldRed.setBounds(110, 200, 340, 20);
+		panelRegistro.add(textFieldRed);
 		
 		JLabel lblTituloRegistro = new JLabel("Registrar entrada");
 		lblTituloRegistro.setHorizontalAlignment(SwingConstants.CENTER);
@@ -113,19 +121,17 @@ public class GUIEmprendimiento extends JFrame {
 		lblMatricula.setBounds(20, 230, 80, 20);
 		panelRegistro.add(lblMatricula);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(110, 230, 340, 20);
-		panelRegistro.add(comboBox);
-		
-		JLabel lblIDEmprendimiento = new JLabel("ID emprendimiento:");
-		lblIDEmprendimiento.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblIDEmprendimiento.setBounds(20, 140, 120, 20);
-		panelRegistro.add(lblIDEmprendimiento);
-		
-		JLabel lblIDEmprendimientoIdentificado = new JLabel("");
-		lblIDEmprendimientoIdentificado.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblIDEmprendimientoIdentificado.setBounds(140, 140, 60, 20);
-		panelRegistro.add(lblIDEmprendimientoIdentificado);
+		JComboBox <String> comboBoxCat = new JComboBox <String> ();
+		comboBoxCat.setBounds(110, 230, 340, 20);
+		comboBoxCat.addItem("Comida");
+		comboBoxCat.addItem("Ropa");
+		comboBoxCat.addItem("Tecnología");
+		comboBoxCat.addItem("Joyería");
+		comboBoxCat.addItem("Arte");
+		comboBoxCat.addItem("Jardinería");
+		comboBoxCat.addItem("Maquillaje");
+		comboBoxCat.addItem("Velas");
+		panelRegistro.add(comboBoxCat);
 		
 		JLabel lblTituloRegistroEmprendimiento = new JLabel("Registrar emprendimiento");
 		lblTituloRegistroEmprendimiento.setHorizontalAlignment(SwingConstants.CENTER);
@@ -139,87 +145,136 @@ public class GUIEmprendimiento extends JFrame {
 		lblTituloRegistroEmprendedor.setBounds(460, 100, 400, 30);
 		panelRegistro.add(lblTituloRegistroEmprendedor);
 		
-		JLabel lblIDEmprendedor = new JLabel("ID emprendedor:");
-		lblIDEmprendedor.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblIDEmprendedor.setBounds(460, 140, 120, 20);
-		panelRegistro.add(lblIDEmprendedor);
-		
-		JLabel lblIDEmprendimientoIdentificado_1 = new JLabel("");
-		lblIDEmprendimientoIdentificado_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblIDEmprendimientoIdentificado_1.setBounds(580, 140, 60, 20);
-		panelRegistro.add(lblIDEmprendimientoIdentificado_1);
-		
 		JLabel lblNombreEmprendedor = new JLabel("Nombre:");
 		lblNombreEmprendedor.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 		lblNombreEmprendedor.setBounds(460, 170, 80, 20);
 		panelRegistro.add(lblNombreEmprendedor);
 		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
-		textField_2.setColumns(10);
-		textField_2.setBounds(530, 170, 330, 20);
-		panelRegistro.add(textField_2);
+		textFieldNomEmp = new JTextField();
+		textFieldNomEmp.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
+		textFieldNomEmp.setColumns(10);
+		textFieldNomEmp.setBounds(530, 170, 330, 20);
+		panelRegistro.add(textFieldNomEmp);
 		
 		JLabel lblApellido = new JLabel("Apellido:");
 		lblApellido.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 		lblApellido.setBounds(460, 200, 80, 20);
 		panelRegistro.add(lblApellido);
 		
-		textField_6 = new JTextField();
-		textField_6.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
-		textField_6.setColumns(10);
-		textField_6.setBounds(530, 200, 330, 20);
-		panelRegistro.add(textField_6);
+		textFieldApellido = new JTextField();
+		textFieldApellido.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
+		textFieldApellido.setColumns(10);
+		textFieldApellido.setBounds(530, 200, 330, 20);
+		panelRegistro.add(textFieldApellido);
 		
 		JLabel lblSemestre = new JLabel("Semestre:");
 		lblSemestre.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblSemestre.setBounds(460, 260, 80, 20);
+		lblSemestre.setBounds(460, 290, 80, 20);
 		panelRegistro.add(lblSemestre);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(530, 260, 40, 20);
-		panelRegistro.add(comboBox_1);
+		JComboBox<Integer> comboBoxSem = new JComboBox<>();
+		comboBoxSem.setBounds(530, 290, 40, 20);
+		for (int i = 1; i <= 9; i++) {
+		    comboBoxSem.addItem(i);
+		}
+		panelRegistro.add(comboBoxSem);
 		
 		JLabel lblMatrcula = new JLabel("Matrícula:");
 		lblMatrcula.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 		lblMatrcula.setBounds(460, 230, 80, 20);
 		panelRegistro.add(lblMatrcula);
 		
-		textField_7 = new JTextField();
-		textField_7.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
-		textField_7.setColumns(10);
-		textField_7.setBounds(530, 230, 330, 20);
-		panelRegistro.add(textField_7);
+		textFieldMatr = new JTextField();
+		textFieldMatr.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
+		textFieldMatr.setColumns(10);
+		textFieldMatr.setBounds(530, 230, 330, 20);
+		panelRegistro.add(textFieldMatr);
 		
-		JComboBox comboBox_1_1 = new JComboBox();
-		comboBox_1_1.setBounds(660, 260, 200, 20);
-		panelRegistro.add(comboBox_1_1);
+		JComboBox<String> comboBoxCar = new JComboBox<>();
+		comboBoxCar.setBounds(660, 290, 200, 20);
+		comboBoxCar.addItem("LATI");
+		comboBoxCar.addItem("Administración");
+		comboBoxCar.addItem("Mercadotecnia");
+		comboBoxCar.addItem("Contador");
+		panelRegistro.add(comboBoxCar);
 		
 		JLabel lblCarrera = new JLabel("Carrera:");
 		lblCarrera.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblCarrera.setBounds(590, 260, 80, 20);
+		lblCarrera.setBounds(590, 290, 80, 20);
 		panelRegistro.add(lblCarrera);
 		
-		JButton btnRegistrarEmprendimiento_1 = new JButton("Registrar");
-		btnRegistrarEmprendimiento_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		btnRegistrarEmprendimiento_1.setBackground(Color.WHITE);
-		btnRegistrarEmprendimiento_1.setBounds(600, 300, 120, 30);
-		panelRegistro.add(btnRegistrarEmprendimiento_1);
+		JComboBox <String> comboBoxEmp = new JComboBox <String>();
+		comboBoxEmp.setBounds(110, 260, 340, 20);
+		Manejo_Emprendedor combo = new Manejo_Emprendedor();
+		combo.cargarEmprendedores(comboBoxEmp);
+		panelRegistro.add(comboBoxEmp);
 		
-		JButton btnRegistrarEmprendimiento_1_1 = new JButton("Registrar");
-		btnRegistrarEmprendimiento_1_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		btnRegistrarEmprendimiento_1_1.setBackground(Color.WHITE);
-		btnRegistrarEmprendimiento_1_1.setBounds(200, 300, 120, 30);
-		panelRegistro.add(btnRegistrarEmprendimiento_1_1);
+		JButton btnRegistrarEmprendedor = new JButton("Registrar");
+		btnRegistrarEmprendedor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Manejo_Emprendedor obj1 = new Manejo_Emprendedor();
+				obj1.insertar(
+
+				textFieldNomEmp.getText(),
+            textFieldApellido.getText(),
+            textFieldMatr.getText(),
+            textFieldTel.getText(),
+            Integer.parseInt(comboBoxSem.getSelectedItem().toString()),
+            comboBoxCar.getSelectedItem().toString()
+        );
+			Manejo_Emprendedor combo = new Manejo_Emprendedor();
+			combo.cargarEmprendedores(comboBoxEmp);
+			JOptionPane.showMessageDialog(null, "Haz registrado a un nuevo emprendedor con éxito.");
+			}
+		});
+		btnRegistrarEmprendedor.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
+		btnRegistrarEmprendedor.setBackground(Color.WHITE);
+		btnRegistrarEmprendedor.setBounds(600, 320, 120, 30);
+		panelRegistro.add(btnRegistrarEmprendedor);
+		
+		JButton btnRegistrarEmprendimiento = new JButton("Registrar");
+		btnRegistrarEmprendimiento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+				Manejo_Emprendimiento entrada = new Manejo_Emprendimiento();
+					String seleccionado = comboBoxEmp.getSelectedItem().toString();
+					int idEmp = Integer.parseInt(seleccionado.split(" - ")[0]);
+					entrada.insertar(
+				                textFieldNombre.getText(),
+				                textFieldRed.getText(),
+				                comboBoxCat.getSelectedItem().toString(),
+				                idEmp
+					);
+
+				            JOptionPane.showMessageDialog(null, "Emprendimiento registrado con éxito.");
+				            textFieldNombre.setText("");
+				            textFieldRed.setText("");
+				        } catch (Exception ex) {
+				            ex.printStackTrace();
+				            JOptionPane.showMessageDialog(null, "Error al registrar emprendimiento");
+				        }
+				    }
+		});
+		btnRegistrarEmprendimiento.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
+		btnRegistrarEmprendimiento.setBackground(Color.WHITE);
+		btnRegistrarEmprendimiento.setBounds(200, 300, 120, 30);
+		panelRegistro.add(btnRegistrarEmprendimiento);
 		
 		JLabel lblEmprendedorDueño = new JLabel("Emprendedor:");
 		lblEmprendedorDueño.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblEmprendedorDueño.setBounds(20, 261, 120, 20);
+		lblEmprendedorDueño.setBounds(20, 260, 120, 20);
 		panelRegistro.add(lblEmprendedorDueño);
 		
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setBounds(110, 261, 340, 20);
-		panelRegistro.add(comboBox_2);
+		JLabel lblTel = new JLabel("Teléfono:");
+		lblTel.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
+		lblTel.setBounds(460, 260, 80, 20);
+		panelRegistro.add(lblTel);
+		
+		textFieldTel = new JTextField();
+		textFieldTel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 12));
+		textFieldTel.setColumns(10);
+		textFieldTel.setBounds(530, 260, 330, 20);
+		panelRegistro.add(textFieldTel);
 		contentPane.add(panelConsulta);
 		
 		JLabel lblTituloConsulta = new JLabel("Consultar entrada");
@@ -233,26 +288,12 @@ public class GUIEmprendimiento extends JFrame {
 		lblTipo.setBounds(50, 120, 150, 25);
 		panelConsulta.add(lblTipo);
 
-		JComboBox comboTipoConsulta = new JComboBox();
-		comboTipoConsulta.setBounds(200, 120, 250, 25);
-		panelConsulta.add(comboTipoConsulta);
-
-		JLabel lblFiltro = new JLabel("Filtrar por:");
+		JLabel lblFiltro = new JLabel("Filtrar por categoría:");
 		lblFiltro.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 14));
-		lblFiltro.setBounds(500, 120, 100, 25);
+		lblFiltro.setBounds(450, 120, 150, 25);
 		panelConsulta.add(lblFiltro);
-
-		JComboBox comboFiltroConsulta = new JComboBox();
-		comboFiltroConsulta.setBounds(600, 120, 250, 25);
-		panelConsulta.add(comboFiltroConsulta);
-
-		JButton btnConsultar = new JButton("Consultar");
-		btnConsultar.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		btnConsultar.setBackground(Color.WHITE);
-		btnConsultar.setBounds(350, 170, 200, 35);
-		panelConsulta.add(btnConsultar);
-
-		String[] columnasEmp = {"ID", "Nombre", "Categoría", "Red social"};
+		
+		String[] columnasEmp = {"ID", "Nombre", "Categoría", "Red social", "Emprendedor"};
 		javax.swing.table.DefaultTableModel modeloEmp =
 		    new javax.swing.table.DefaultTableModel(columnasEmp, 0);
 
@@ -261,20 +302,60 @@ public class GUIEmprendimiento extends JFrame {
 		scrollEmp.setBounds(50, 230, 800, 280);
 		panelConsulta.add(scrollEmp);
 		
-		String[] columnasEmprendedor = {"ID", "Nombre", "Apellido", "Carrera", "Semestre"};
-		javax.swing.table.DefaultTableModel modeloEmprendedor =
-		    new javax.swing.table.DefaultTableModel(columnasEmprendedor, 0);
+		JComboBox<String> comboFiltroConsulta = new JComboBox <String> ();
+		comboFiltroConsulta.setBounds(600, 120, 250, 25);
+		comboFiltroConsulta.addItem("Comida");
+		comboFiltroConsulta.addItem("Ropa");
+		comboFiltroConsulta.addItem("Tecnología");
+		comboFiltroConsulta.addItem("Joyería");
+		comboFiltroConsulta.addItem("Arte");
+		comboFiltroConsulta.addItem("Jardinería");
+		comboFiltroConsulta.addItem("Maquillaje");
+		comboFiltroConsulta.addItem("Velas");
+		panelConsulta.add(comboFiltroConsulta);
 
-		javax.swing.JTable tablaEmprendedor = new javax.swing.JTable(modeloEmprendedor);
-		javax.swing.JScrollPane scrollEmprendedor = new javax.swing.JScrollPane(tablaEmprendedor);
-		scrollEmprendedor.setBounds(50, 230, 800, 280);
-		panelConsulta.add(scrollEmprendedor);
+		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Manejo_Emprendimiento consulta = new Manejo_Emprendimiento();
+					String categoria = comboFiltroConsulta.getSelectedItem().toString();
+					ResultSet rs = consulta.consultarPorCategoria(categoria);
 
-		// Oculta esta por defecto
-		scrollEmprendedor.setVisible(false);
+				            modeloEmp.setRowCount(0);
 
+				            while (rs.next()) {
+
+				                Object[] fila = {
+				                    rs.getInt("ID_Emprendimiento"),
+				                    rs.getString("Nombre"),
+				                    rs.getString("Categoria"),
+				                    rs.getString("Red_Social"),
+				                    rs.getString("Emprendedor")
+				                };
+
+				                modeloEmp.addRow(fila);
+				            }
+
+				        } catch (Exception ex) {
+				            ex.printStackTrace();
+				            JOptionPane.showMessageDialog(null, "Error en consulta");
+				        }
+				
+			}
+		});
+		btnConsultar.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
+		btnConsultar.setBackground(Color.WHITE);
+		btnConsultar.setBounds(350, 170, 200, 35);
+		panelConsulta.add(btnConsultar);
 
 		JButton btnVolverMenu = new JButton("Menú");
+		btnVolverMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelConsulta.setVisible(false);
+				panelMenu.setVisible(true);
+			}
+		});
 		btnVolverMenu.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 		btnVolverMenu.setBackground(Color.WHITE);
 		btnVolverMenu.setBounds(50, 520, 120, 30);
